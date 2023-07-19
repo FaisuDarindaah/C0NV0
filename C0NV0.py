@@ -30,7 +30,7 @@ logo =  """\033[1;35;40m
                                                   
 __________________________________________  
 \033[1;34;40m-----------------------------------------------
-\033[1;34;40m MAD3 BY  : F9IISU D9RIIND99H
+\033[1;34;40m MAD3 BY  : F9IISU D9RIIND9H
 \033[1;34;40m-----------------------------------------------"""
 
 def menu():
@@ -51,34 +51,30 @@ def menu():
 		print('\n\033[1;31mChoose valid option\033[0;97m')
 		menu()
 
-def aclass():
-
+def login():
     browser.open(url)
-
     browser.select_form(nr = 0)
-
-    browser.form['email'] = emailx
-
-    browser.form['pass'] = pwx
-
+    browser.form['email'] = USERNAME
+    browser.form['pass'] = PASSWORD
     r = browser.submit()
-
+    f = open("login.html", "wb")
+    f.write(r.read())
+    f.close()
     browser.select_form(nr = 0)
-
-    msg1=str(input("➣Enter 2 step google code : "))
-
-    print(msg1)
-
-    browser.form['approvals_code'] = msg1
-
-    r=browser.submit()
-
-    browser.select_form(nr = 0)
-
-    browser.form['name_action_selected'] = ['save_device']
-
+    print("\033[1m\033[36m", end = "")
+    print(47*'\033[1;35;40m-')
+    sp("\033[1;37;1m[?] Enter the 2 factor code by google authenticator\n")
+    print(47*'\033[1;37;1m-')
+    apr = str(input('\033[1;37;1m[?] Enter Code : '))
+    try:
+        browser.form['approvals_code'] = apr
+    except mechanize._form_controls.ControlNotFoundError:
+        print("Wrong password or some shit, check generated file")
+        f = open("epage_" + str(USERNAME) + ".html", "wb")
+        f.write(r.read())
+        f.close()
+        exit(1)
     r = browser.submit()
-
     browser.select_form(nr = 0)
     try:
         browser.form['name_action_selected'] = ['save_device']
